@@ -1,6 +1,7 @@
 from Optimizers.optimizer_manager import optimizer_manager
 from Loss.loss_manager import loss_manager
 from time import time
+import numpy as np
 
 class Model:
     def __init__(self, layers=[], optimizer='gd', loss='mse', learning_rate=0.01):
@@ -42,10 +43,9 @@ class Model:
     def set_learning_rate(self, learning_rate):
         self.learning_rate = learning_rate
 
-    def fit(self, X, Y, epochs, print_log=True):
+    def fit(self, X, Y, epochs, print_log=True):  #add batch system over here. overflow occurs.
         for epoch in range(epochs):
             start_time = time()
-
             Y_pred = self.forward(X)
             loss = self.loss(Y, Y_pred)
             dL = self.loss_deriv(Y, Y_pred)
@@ -59,6 +59,19 @@ class Model:
                 duration = round(duration, 3)
                 log = 'epoch: {} | loss: {} | duration: {} seconds'.format(epoch+1, loss, duration)
                 print(log)
+
+    def accuracy(self, X, Y):
+        result = self.forward(X)
+        result = list(map(np.argmax, result))
+        result = np.array(result)
+        answers = list(map(np.argmax, Y))
+        answers = np.array(answers)
+        dif = result-answers
+        corrects = dif == 0
+        corrects = np.sum(corrects)
+        Accuracy = 100*corrects/len(X)
+        print(Accuracy, '%')
+        return Accuracy
 
     def __call__(self, X):
         return self.forward(X)

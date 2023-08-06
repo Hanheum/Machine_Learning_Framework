@@ -1,5 +1,9 @@
+import numpy as np
+
 def gd(target, gradient, learning_rate):  #basic gradient descent
-    return target - learning_rate * gradient
+    target = target - learning_rate * gradient
+    target = target.astype(np.float32)
+    return target
 
 str_type = type("hello world")
 none_type = type(None)          #variable types to handle inputs.

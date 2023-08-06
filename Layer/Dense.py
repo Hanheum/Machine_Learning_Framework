@@ -22,14 +22,14 @@ class Dense(layer):
         self.Z = np.matmul(self.X, self.W)
         if self.use_bias: self.Z += self.B
         self.A = self.activation(self.Z)
-        return self.Z, self.A
+        return self.Z.astype(np.float32), self.A.astype(np.float32)
     
     def backward(self, dZ1):       #backward propagation
-        dZ1 = dZ1 * self.activation_deriv(self.Z)
-        self.dW = np.matmul(self.X.T, dZ1)
-        self.dB = np.sum(dZ1, axis=0)
+        #dZ1 = dZ1 * self.activation_deriv(self.Z)
+        self.dW = np.matmul(self.X.T, dZ1).astype(np.float32)
+        self.dB = np.sum(dZ1, axis=0).astype(np.float32)
         dX = np.matmul(dZ1, self.W.T)
-        return dX
+        return dX.astype(np.float32)
     
     def __call__(self, X):         #call forward propagation when called
         self.X = X.astype(np.float32)
@@ -47,5 +47,5 @@ class Dense(layer):
         self.W = np.random.randn(self.input_shape[0], self.nods).astype(np.float32)  #Generate Weight
         if self.use_bias: self.B = np.zeros((self.nods)).astype(np.float32)    #Generate Bias
 
-        self.dW = np.zeros_like(self.W)
-        self.dB = np.zeros_like(self.B)
+        self.dW = np.zeros_like(self.W).astype(np.float32)
+        self.dB = np.zeros_like(self.B).astype(np.float32)

@@ -26,24 +26,27 @@ class Conv2D(layer):
         for a in range(len(self.X)):
             for i in range(self.filters):
                 for j in range(self.input_shape[0]):
-                    self.Z[a][i] += correlate(self.X[a][j], self.K[i][j], mode='valid', method='direct')
+                    self.Z[a][i] += correlate(self.X[a][j], self.K[i][j], mode='valid', method='direct').astype(np.float32)
                 self.Z[a][i] += self.B[i]
         self.A = self.activation(self.Z)
-        return self.Z, self.A
+        return self.Z.astype(np.float32), self.A.astype(np.float32)
 
     def backward(self, dZ1):
-        dZ1 = dZ1*self.activation_deriv(self.Z)
+        dZ1 = dZ1 * self.activation_deriv(self.Z)
+        dZ1 = dZ1.astype(np.float32)
         m = len(self.X)
-        self.dK = np.zeros_like(self.K)
+        self.dK = np.zeros_like(self.K).astype(np.float32)
         dX = np.zeros_like(self.X)
         for a, one_x in enumerate(self.X):
             for i in range(self.filters):
                 for j in range(self.input_shape[0]):
-                    self.dK[i][j] += correlate(one_x[j], dZ1[a][i], mode='valid', method='direct')
-                    dX[a][j] = convolve(dZ1[a][i], self.K[i][j], mode='full', method='direct')
+                    self.dK[i][j] += correlate(one_x[j], dZ1[a][i], mode='valid', method='direct').astype(np.float32)
+                    dX[a][j] = convolve(dZ1[a][i], self.K[i][j], mode='full', method='direct').astype(np.float32)
         self.dK = self.dK/m
+        self.dK = self.dK.astype(np.float32)
         self.dB = sum(dZ1)/m
-        return dX
+        self.dB = self.dB.astype(np.float32)
+        return dX.astype(np.float32)
 
     def __call__(self, X):
         self.X = X.astype(np.float32)
@@ -61,5 +64,5 @@ class Conv2D(layer):
         self.K = np.random.randn(self.filters, self.input_shape[0], *self.kernel_size).astype(np.float32)
         if self.use_bias: self.B = np.zeros(self.output_shape).astype(np.float32)
 
-        self.dK = np.zeros_like(self.K)
-        self.dB = np.zeros_like(self.B)
+        self.dK = np.zeros_like(self.K).astype(np.float32)
+        self.dB = np.zeros_like(self.B).astype(np.float32)
