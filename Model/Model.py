@@ -36,9 +36,9 @@ class Model:
         for i in range(len(self.layers)-1, -1, -1):
             self.dZ1 = self.layers[i].backward(self.dZ1)
 
-    def optimize(self):
+    def reset_gradient(self):
         for i in range(len(self.layers)):
-            self.layers[i].optimize(self.optimizer, self.learning_rate)
+            self.layers[i].reset_gradient()
 
     def set_learning_rate(self, learning_rate):
         self.learning_rate = learning_rate
@@ -46,11 +46,8 @@ class Model:
     def fit(self, X, Y, epochs, print_log=True):  #add batch system over here. overflow occurs.
         for epoch in range(epochs):
             start_time = time()
-            Y_pred = self.forward(X)
-            loss = self.loss(Y, Y_pred)
-            dL = self.loss_deriv(Y, Y_pred)
-            self.backward(dL)
-            self.optimize()
+            self.reset_gradient()
+            loss = self.optimizer(X, Y, self.layers, self.forward, self.backward, self.loss, self.loss_deriv, self.learning_rate)
 
             end_time = time()
 

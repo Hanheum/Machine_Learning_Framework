@@ -49,3 +49,7 @@ class Dense(layer):
 
         self.dW = np.zeros_like(self.W).astype(np.float32)
         self.dB = np.zeros_like(self.B).astype(np.float32)
+
+    def reset_gradient(self):
+        self.dW = np.zeros_like(self.W).astype(np.float32)
+        self.dB = np.zeros_like(self.B).astype(np.float32)

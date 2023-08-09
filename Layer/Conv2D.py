@@ -53,9 +53,9 @@ class Conv2D(layer):
         Z, A = self.forward(self.X)
         return Z, A
     
-    def optimize(self, optimizer, learning_rate):
-        self.K = optimizer(self.K, self.dK, learning_rate)
-        self.B = optimizer(self.B, self.dB, learning_rate)
+    def optimize(self, optimize_function, learning_rate):
+        self.K = optimize_function(self.K, self.dK, learning_rate)
+        self.B = optimize_function(self.B, self.dB, learning_rate)
 
     def calculate_output_shape(self):
         self.output_shape = (self.filters, self.input_shape[-1]-self.kernel_size[0]+1, self.input_shape[-1]-self.kernel_size[0]+1)
@@ -64,5 +64,9 @@ class Conv2D(layer):
         self.K = np.random.randn(self.filters, self.input_shape[0], *self.kernel_size).astype(np.float32)
         if self.use_bias: self.B = np.zeros(self.output_shape).astype(np.float32)
 
+        self.dK = np.zeros_like(self.K).astype(np.float32)
+        self.dB = np.zeros_like(self.B).astype(np.float32)
+
+    def reset_gradient(self):
         self.dK = np.zeros_like(self.K).astype(np.float32)
         self.dB = np.zeros_like(self.B).astype(np.float32)

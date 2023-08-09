@@ -30,3 +30,6 @@ class Reshape(layer):
 
     def make_variables(self):
         pass
+
+    def reset_gradient(self):
+        pass
