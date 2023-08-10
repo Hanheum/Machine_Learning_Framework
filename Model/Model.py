@@ -23,27 +23,27 @@ class Model:
             self.layers[i+1].make_variables()
             
         
-    def forward(self, X):
+    def forward(self, X):  #forward propagation
         self.X = X
         self.A = self.X
-        for i, layer in enumerate(self.layers):
+        for layer in self.layers:
             self.Z, self.A = layer.forward(self.A)
             
         return self.A
     
-    def backward(self, dL_first):
+    def backward(self, dL_first):  #backward propagation
         self.dZ1 = dL_first
         for i in range(len(self.layers)-1, -1, -1):
             self.dZ1 = self.layers[i].backward(self.dZ1)
 
-    def reset_gradient(self):
+    def reset_gradient(self):    #reset gradients every epoch iteration.
         for i in range(len(self.layers)):
             self.layers[i].reset_gradient()
 
-    def set_learning_rate(self, learning_rate):
+    def set_learning_rate(self, learning_rate):   #option to change learning rate
         self.learning_rate = learning_rate
 
-    def fit(self, X, Y, epochs, print_log=True):  #add batch system over here. overflow occurs.
+    def fit(self, X, Y, epochs, print_log=True):
         for epoch in range(epochs):
             start_time = time()
             self.reset_gradient()

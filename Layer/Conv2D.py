@@ -20,7 +20,7 @@ class Conv2D(layer):
         self.dK = None
         self.dB = None
 
-    def forward(self, X):
+    def forward(self, X):     #forward propagation. matrix multiplication, but every element is matrix, and multiplication is correlation.
         self.X = X.astype(np.float32)
         self.Z = np.zeros((self.X.shape[0], *self.output_shape))
         for a in range(len(self.X)):
@@ -31,7 +31,7 @@ class Conv2D(layer):
         self.A = self.activation(self.Z)
         return self.Z.astype(np.float32), self.A.astype(np.float32)
 
-    def backward(self, dZ1):
+    def backward(self, dZ1):   #backward propagation. 
         dZ1 = dZ1 * self.activation_deriv(self.Z)
         dZ1 = dZ1.astype(np.float32)
         m = len(self.X)
@@ -53,20 +53,20 @@ class Conv2D(layer):
         Z, A = self.forward(self.X)
         return Z, A
     
-    def optimize(self, optimize_function, learning_rate):
+    def optimize(self, optimize_function, learning_rate):    #optimize function applied
         self.K = optimize_function(self.K, self.dK, learning_rate)
         self.B = optimize_function(self.B, self.dB, learning_rate)
 
-    def calculate_output_shape(self):
+    def calculate_output_shape(self):     #calculate output shape, needed cuz layer doesn't know its input shape at first.
         self.output_shape = (self.filters, self.input_shape[-1]-self.kernel_size[0]+1, self.input_shape[-1]-self.kernel_size[0]+1)
 
-    def make_variables(self):
+    def make_variables(self):    #make variables later, same reason as above.
         self.K = np.random.randn(self.filters, self.input_shape[0], *self.kernel_size).astype(np.float32)
         if self.use_bias: self.B = np.zeros(self.output_shape).astype(np.float32)
 
         self.dK = np.zeros_like(self.K).astype(np.float32)
         self.dB = np.zeros_like(self.B).astype(np.float32)
 
-    def reset_gradient(self):
+    def reset_gradient(self):    #reset gradient variables every epoch iteration.
         self.dK = np.zeros_like(self.K).astype(np.float32)
         self.dB = np.zeros_like(self.B).astype(np.float32)

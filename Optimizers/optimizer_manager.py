@@ -4,7 +4,7 @@ str_type = type("hello world")
 none_type = type(None)          #variable types to handle inputs.
 function_type = type(gd)
 
-def optimizer_manager(optimizer):
+def optimizer_manager(optimizer):  #return wanted optimizer function, regardless of input type.
     Type = type(optimizer)
     if Type == str_type:
         if optimizer == 'gd':
