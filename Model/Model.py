@@ -43,11 +43,11 @@ class Model:
     def set_learning_rate(self, learning_rate):   #option to change learning rate
         self.learning_rate = learning_rate
 
-    def fit(self, X, Y, epochs, print_log=True):
+    def fit(self, X, Y, epochs, print_log=True, batch_size=None):
         for epoch in range(epochs):
             start_time = time()
             self.reset_gradient()
-            loss = self.optimizer(X, Y, self.layers, self.forward, self.backward, self.loss, self.loss_deriv, self.learning_rate)
+            loss = self.optimizer(X, Y, self.layers, self.forward, self.backward, self.loss, self.loss_deriv, self.learning_rate, batch_size=batch_size)
 
             end_time = time()
 
