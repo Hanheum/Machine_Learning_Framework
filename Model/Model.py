@@ -73,8 +73,8 @@ class Model:
         corrects = dif == 0
         corrects = np.sum(corrects)
         Accuracy = 100*corrects/len(X)
-        print(Accuracy, '%')
-        return round(Accuracy)
+        print(round(Accuracy), '%')
+        return Accuracy
 
     def __call__(self, X):
         return self.forward(X)
