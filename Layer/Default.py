@@ -4,6 +4,7 @@ class layer:
         self.X = None   #input
         self.Z = None   #result before activation
         self.A = None   #result after activation
+        self.training = False
         self.input_shape = input_shape
         self.output_shape = None
 

@@ -44,6 +44,9 @@ class Model:
         self.learning_rate = learning_rate
 
     def fit(self, X, Y, epochs, print_log=True, batch_size=None):
+        for i in range(len(self.layers)):
+            self.layers[i].training = True
+
         for epoch in range(epochs):
             start_time = time()
             self.reset_gradient()
@@ -56,6 +59,9 @@ class Model:
                 duration = round(duration, 3)
                 log = 'epoch: {} | loss: {} | duration: {} seconds'.format(epoch+1, loss, duration)
                 print(log)
+        
+        for i in range(len(self.layers)):
+            self.layers[i].training = False
 
     def accuracy(self, X, Y):
         result = self.forward(X)
@@ -68,7 +74,7 @@ class Model:
         corrects = np.sum(corrects)
         Accuracy = 100*corrects/len(X)
         print(Accuracy, '%')
-        return Accuracy
+        return round(Accuracy)
 
     def __call__(self, X):
         return self.forward(X)

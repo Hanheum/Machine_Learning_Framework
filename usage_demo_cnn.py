@@ -2,6 +2,7 @@ from Model.Model import Model
 from Layer.Dense import Dense
 from Layer.Conv2D import Conv2D
 from Layer.Flatten import Flatten
+from Layer.Dropout import Dropout
 from Layer.AvgPool import AvgPool    #import layers and model class
 
 import numpy as np  
@@ -45,6 +46,7 @@ layers = [
     AvgPool((2, 2)),  #average pooling 2D layer
     Flatten(),   #flattening layer. almost same as reshape layer
     Dense(nods=10, activation='relu'),  #dense layer. also called NN.
+    Dropout(ratio=0.2),   #dropout layer, ignoring 20% of variables.
     Dense(nods=2, activation='softmax')  #two nods(=neurons) means the output shape of this model.
 ]
 
