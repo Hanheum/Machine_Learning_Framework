@@ -67,6 +67,8 @@ class Conv2D(layer):
         self.dK = np.zeros_like(self.K).astype(np.float32)
         self.dB = np.zeros_like(self.B).astype(np.float32)
 
+        self.K = self.K
+
     def reset_gradient(self):    #reset gradient variables every epoch iteration.
         self.dK = np.zeros_like(self.K).astype(np.float32)
         self.dB = np.zeros_like(self.B).astype(np.float32)

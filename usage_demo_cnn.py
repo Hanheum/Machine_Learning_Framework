@@ -52,5 +52,5 @@ layers = [
 
 model = Model(layers=layers, optimizer='gd', loss='cce', learning_rate=0.00001)  #make model class
 
-model.fit(X, Y, 30, batch_size=128)   #fit the model with data X, Y. epoch 30. batch size 128
+model.fit(X, Y, 30)   #fit the model with data X, Y. epoch 30. batch size 128
 model.accuracy(X, Y)      #calculate accuracy of model using data X and Y(training data)
