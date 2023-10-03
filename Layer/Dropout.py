@@ -11,6 +11,8 @@ class Dropout(layer):
         self.random_blanks = None
         self.var = None
 
+        self.Class = 'Dropout'
+
     def forward(self, X):
         if self.training: 
             self.random_blanks = np.ones((np.prod(self.input_shape)))

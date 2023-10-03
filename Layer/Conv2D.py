@@ -4,7 +4,7 @@ import numpy as np
 from scipy.signal import correlate, convolve
 
 class Conv2D(layer):
-    def __init__(self, filters, kernel_size, input_shape=None, activation=None, use_bias=True):
+    def __init__(self, filters, kernel_size, input_shape=None, activation=None, use_bias=True, variable_uniform_function=None):
         super().__init__(input_shape=input_shape)
 
         self.activation, self.activation_deriv = activation_manager(activation)
@@ -19,6 +19,10 @@ class Conv2D(layer):
         self.B = None
         self.dK = None
         self.dB = None
+
+        self.variable_uniform_function = variable_uniform_function
+
+        self.Class = 'Conv2D'
 
     def forward(self, X):     #forward propagation. matrix multiplication, but every element is matrix, and multiplication is correlation.
         self.X = X.astype(np.float32)
@@ -67,7 +71,10 @@ class Conv2D(layer):
         self.dK = np.zeros_like(self.K).astype(np.float32)
         self.dB = np.zeros_like(self.B).astype(np.float32)
 
-        self.K = self.K
+        if self.variable_uniform_function == None:
+            self.K = self.K
+        else:
+            self.K = self.variable_uniform_function(self.K)
 
     def reset_gradient(self):    #reset gradient variables every epoch iteration.
         self.dK = np.zeros_like(self.K).astype(np.float32)

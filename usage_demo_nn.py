@@ -33,3 +33,5 @@ layers = [
 model = Model(layers=layers, optimizer='gd', loss='cce', learning_rate=0.1)
 model.fit(X=x, Y=y, epochs=10000)
 model.accuracy(x, y)
+
+model.save('C:\\Users\\chh36\\Desktop\\model_save_file_test_1')

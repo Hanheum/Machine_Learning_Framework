@@ -9,6 +9,8 @@ class AvgPool(layer):
         self.kernel_size = kernel_size
         self.K = np.ones(kernel_size)
 
+        self.Class = 'AvgPool'
+
     def forward(self, X):
         self.X = X
         self.Z = np.zeros((len(self.X), *self.output_shape))

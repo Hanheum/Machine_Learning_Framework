@@ -1,6 +1,7 @@
 class layer:
     def __init__(self, input_shape=None, name=None):
         self.name = name
+        self.Class = None
         self.X = None   #input
         self.Z = None   #result before activation
         self.A = None   #result after activation

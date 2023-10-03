@@ -7,6 +7,8 @@ class Flatten(layer):
 
         self.output_shape = None
 
+        self.Class = 'Flatten'
+
     def forward(self, X):  #change shape to output shape
         self.X = X
         self.Z = np.reshape(self.X, (self.X.shape[0], *self.output_shape))

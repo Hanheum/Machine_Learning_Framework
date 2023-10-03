@@ -3,7 +3,7 @@ from Activations.activation_manager import activation_manager
 import numpy as np
 
 class Dense(layer):
-    def __init__(self, nods, input_shape=None, activation=None, use_bias=True):
+    def __init__(self, nods, input_shape=None, activation=None, use_bias=True, variable_uniform_function=None):
         super().__init__(input_shape=input_shape)
 
         self.activation, self.activation_deriv = activation_manager(activation)  #activation function
@@ -16,6 +16,10 @@ class Dense(layer):
         self.B = None
         self.dW = None
         self.dB = None
+
+        self.variable_uniform_function = variable_uniform_function
+
+        self.Class = 'Dense'
 
     def forward(self, X):          #forward propagation
         self.X = X.astype(np.float32)
@@ -50,7 +54,10 @@ class Dense(layer):
         self.dW = np.zeros_like(self.W).astype(np.float32)
         self.dB = np.zeros_like(self.B).astype(np.float32)
 
-        self.W = self.W / 10
+        if self.variable_uniform_function == None:
+            pass
+        else:
+            self.W = self.variable_uniform_function(self.W)
 
     def reset_gradient(self):      #reset gradient every epoch iteration.
         self.dW = np.zeros_like(self.W).astype(np.float32)
